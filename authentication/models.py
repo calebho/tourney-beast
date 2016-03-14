@@ -5,6 +5,32 @@ from django.db import models
 
 import us #for state names and abbreviations
 
+class AccountManager(BaseUserManager):
+    def create_user(self, email, password=None, **kwargs):
+        if not email:
+            raise ValueError('Users must have a valid email')
+
+        if not kwargs.get('username'):
+            raise ValueError('Users must have a valid username')
+
+        account = self.model(
+            email=self.normalize_email(email),
+            username=kwargs.get('username')
+        )
+
+        account.set_password(password)
+        account.save()
+
+        return account
+
+    def create_superuser(self, email, password, **kwargs):
+        account = self.create_user(email, password, **kwargs)
+
+        account.is_admin = True
+        account.save()
+
+        return account
+
 class Account(AbstractBaseUser):
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=40, unique=True)
@@ -62,29 +88,3 @@ class Account(AbstractBaseUser):
 
     def get_location(self):
         return ', '.join([self.city, self.state])
-
-class AccountManager(BaseUserManager):
-    def create_user(self, email, password=None, **kwargs):
-        if not email:
-            raise ValueError('Users must have a valid email')
-
-        if not kwargs.get('username'):
-            raise ValueError('Users must have a valid username')
-
-        account = self.model(
-            email=self.normalize_email(email),
-            username=kwargs.get('username')
-        )
-
-        account.set_password(password)
-        account.save()
-
-        return account
-
-    def create_superuser(self, email, password, **kwargs):
-        account = self.create_user(self, email, password, **kwargs)
-
-        account.is_admin = True
-        account.save()
-
-        return account
