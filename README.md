@@ -8,6 +8,7 @@ $ virtualenv virtual-environment-name
 $ source virtual-environment-name/bin/activate
 $ cd tourney-beast
 $ pip install -r requirements.txt
+$ python manage.py migrate
 $ python manage.py runserver
 </code></pre>
 
