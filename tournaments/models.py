@@ -38,3 +38,5 @@ class Tournament(models.Model):
     #TODO: media content field
 
     sport = models.CharField(max_length=40, blank=True)
+    start_age = models.IntegerField(blank=True)
+    end_age = models.IntegerField(blank=True)
