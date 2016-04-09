@@ -1,2 +1,8 @@
+# compiled Python
 *.pyc
+
+# SQLite database
 *.sqlite3
+
+# Node modules
+node_modules/
